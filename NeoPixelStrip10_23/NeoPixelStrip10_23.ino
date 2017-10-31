@@ -26,66 +26,6 @@ void setup() {
   //pinMode(buttonPin,IMPUT);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  //reads potetiometer and prints the value
-    /* used for color intensity
-    sensorValue = analogRead(sensorPin) / 4; */
-    //Used for brightness
-    sensorValue = digitalRead(sensorPin2);
-    sensorValue3 = digitalRead(sensorPin3);
-    sensorValue4 = digitalRead(sensorPin4);
-    //prints line
-    Serial.println(sensorValue3);
-
-strip.setBrightness(60);
-
-
-if (sensorValue3 == 0) {
-  state = 2;
-}
-//if (sensorValue == 0) {
-//  state = 1;
-//}
-//if (sensorValue4 == 0) {
-//  state = 0;
-//}
-
-if (state == 0) {
-    setAll(255, 0, 0);
-    strip.show();
-}
-else if (state == 1){
-    setAll(30, 5, 255);
-    strip.show();
-}
-else if (state == 2) {
-  //gradient(220,20,70,255,0,0);
-  //TwinklePink(150, 10, false);
-  rainbowCycle(10);
- // strip.show();
-}
-
-/*else {
-  setAll(2, 50, 40);
-  strip.show();
- */
-//defaultColors(1, 0, 255, 0);
-//strip.setBrightness(10);
-//strip.show();
-
-
-
-}
-
-void setAll(byte red, byte green, byte blue) {
-  for(int i = 0; i < NUM_LEDS; i++ ) {
-    setPixel(i, red, green, blue);
-  }
-  strip.show();
-}
-
-
 
 void setPixel(int Pixel, byte red, byte green, byte blue)  {
   #ifdef ADAFRUIT_NEOPIXEL_H
@@ -104,20 +44,28 @@ void defaultColors(int pixelNum, int redValue, int greenValue,  int blueValue) {
 }
 
 void TwinklePink(int Count, int SpeedDelay, boolean OnlyOne) {
-  setAll(0,0,0);
-  
+  setAll(220,20,70);
   for (int i=0; i<Count; i++) {
      //setPixel(random(NUM_LEDS),random(0,255),random(0,255),random(0,255)); all colors
-     setPixel(random(NUM_LEDS),220,20,70); //pink only
+     setPixel(random(NUM_LEDS),0, 0, 0); 
      //showStrip();
      strip.show();
+     delay(SpeedDelay);
+     if(OnlyOne) { 
+       setAll(220,20,70); 
+     }
+   }
+   for (int i=0; i<Count; i++) {
+     //setPixel(random(NUM_LEDS),random(0,255),random(0,255),random(0,255)); all colors
+     setPixel(random(NUM_LEDS),220, 20, 70); 
+     //showStrip();
+     strip.show(); 
      delay(SpeedDelay);
      if(OnlyOne) { 
        setAll(0,0,0); 
      }
    }
-
-  delay(SpeedDelay);
+//  delay(SpeedDelay);
 }
 
 
@@ -156,18 +104,9 @@ Serial.print(" ");
 Serial.println(c[2]);
   return c;
 }
-
-void gradient(int Red1, int Green1, int Blue1, int Red2,int Green2, int Blue2)
-{
-    int TotalSteps = NUM_LEDS;
-    for (int Index = 0; Index < TotalSteps; Index++)
-   {
-        uint8_t red = ((Red1) * (TotalSteps - Index) + (Red2 * Index)) / TotalSteps;
-        uint8_t green = ((Green1) * (TotalSteps - Index) + (Green2 * Index)) / TotalSteps;
-        uint8_t blue = ((Blue1) * (TotalSteps - Index) + (Blue2 * Index)) / TotalSteps;
-        strip.setPixelColor(Index, red,green,blue);
-    }
-   strip.show();
+//
+void gradient(int red1, int green1, int blue1, int red2, int green2, int blue2) {
+    exit;
 }
 
 
@@ -192,3 +131,59 @@ void gradient(int Red1, int Green1, int Blue1, int Red2,int Green2, int Blue2)
 //
 //  return c;
 //}
+
+void setAll(byte red, byte green, byte blue) {
+  for(int i = 0; i < NUM_LEDS; i++ ) {
+    setPixel(i, red, green, blue);
+  }
+  strip.show();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  //reads potetiometer and prints the value
+    /* used for color intensity
+    sensorValue = analogRead(sensorPin) / 4; */
+    //Used for brightness
+    //sensorValue = digitalRead(sensorPin2);
+    sensorValue3 = digitalRead(sensorPin3);
+    //sensorValue4 = digitalRead(sensorPin4);
+    //prints line
+    Serial.println(sensorValue3);
+
+    strip.setBrightness(60);
+    
+    
+    if (sensorValue3 == 0) {
+      state = (state+1)%4;
+      delay(200);
+    }
+    //if (sensorValue == 0) {
+    //  state = 1;
+    //}
+    //if (sensorValue4 == 0) {
+    //  state = 0;
+    //}
+    
+    if (state == 0) {
+        setAll(255, 0, 0);
+        strip.show();
+    }
+    else if (state == 1){
+        setAll(30, 5, 255);
+        strip.show();
+    }
+    else if (state == 2) {
+        //gradient(220,20,70,255,0,0);
+        TwinklePink(50, 10, false);
+        //rainbowCycle(10);
+        setAll(200, 20, 70);
+        strip.show();
+    }
+    else {
+        setAll(0,0,0);
+        strip.show();
+    }
+}
+
+
