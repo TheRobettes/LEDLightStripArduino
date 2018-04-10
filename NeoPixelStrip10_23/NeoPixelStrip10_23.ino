@@ -48,18 +48,19 @@ void TwinklePink(int Count, int SpeedDelay) {
         delay(SpeedDelay);
         //check periodically if button is pressed; if it is, quit out of this loop so state can change
         sensorValue3 = digitalRead(sensorPin3);
+        Serial.println(sensorValue3);
         if (sensorValue3 == 0) {
             return;
         }
     }
     for (int i=0; i<Count; i++) {
-        //setPixel(random(NUM_LEDS),random(0,255),random(0,255),random(0,255)); all colors
         setPixel(random(NUM_LEDS),220, 20, 70); 
         //showStrip();
         strip.show(); 
         delay(SpeedDelay);
         //check periodically if button is pressed; if it is, quit out of this loop so state can change
         sensorValue3 = digitalRead(sensorPin3);
+        Serial.println(sensorValue3);
         if (sensorValue3 == 0) {
             return;
       }
@@ -91,9 +92,8 @@ void loop() {
     }
     //twinkling pink
     else if (state == 2) {
-        TwinklePink(50, 10, false);
-        setAll(200, 20, 70);
-        strip.show();
+        TwinklePink(50, 10);
+        //setAll(100,100,100);
     }
     //off
     else {
